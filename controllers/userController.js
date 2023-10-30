@@ -17,5 +17,6 @@ exports.signUp = async(req, res) => {
 }
 
 exports.signIn = async(req, res) => {
-    
+    console.log('req body: ' + req.body);
+    const { username, password } = req.body;
 }
