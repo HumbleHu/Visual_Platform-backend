@@ -39,4 +39,25 @@ describe('User Controller', () => {
         expect(res.status.calledWith(200)).to.be.true;
         expect(res.json.calledOnce).to.be.true;
     });
+
+    it('Should login failed and user does not exists', async() => {
+        const req = {
+            body: {
+                username: 'notexist',
+                password: 'testpassword'
+            }
+        };
+
+        const res = {
+            status: sinon.stub().returnsThis(),
+            json: sinon.stub()
+        };
+
+        sinon.stub(userModel, 'findOne').resolves(null);
+
+        await userController.signIn(req, res);
+        expect(res.status.calledWith(400)).to.be.true;
+        expect(res.json.calledOnce).to.be.true;
+        expect(res.json.firstCall.args[0]).to.deep.equal({msg: 'user does not exists'});
+    });
 })
